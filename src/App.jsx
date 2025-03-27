@@ -8,11 +8,12 @@ function App() {
   const [input, setInput] = useState('');
   const [customName, setCustomName] = useState('');
   const [shortenedUrls, setShortenedUrls] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFetching, setIsFetching] = useState(null);
-  const [fetchTrigger, setFetchTrigger] = useState(0);
+  
+  const [page, setPage] = useState(1);  //pagination
+  const [loading, setLoading] = useState(false);  //pagination
+  const [hasMore, setHasMore] = useState(true);  // pagination
+  const [isFetching, setIsFetching] = useState(null);  // state used to show a loader while fetching the urls
+  const [fetchTrigger, setFetchTrigger] = useState(0);  // Forcelly triggering the useEffect after submission of url
 
   const loaderRef = useRef();
   const observerRef = useRef();

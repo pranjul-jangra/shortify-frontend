@@ -15,9 +15,11 @@
 
   &>h1{
     margin-bottom: 15px;
+    text-shadow: 0 0 1px black;
   }
 
   &>form{
+    box-shadow: 0 0 8px 0.1px grey;
     width: clamp(300px, 100vw, 500px);
     display: flex;
     flex-direction: column;
@@ -37,25 +39,28 @@
       text-align: center;
       border: 1px solid black;
       border-radius: 3px;
-      transition: all 0.2s;
-      &:hover{
-        transform: scale(1.02) translateY(-2px);
-        border: 1px solid black;
+      color: rgb(230, 13, 121);
+      &:focus{
+        box-shadow: inset 0 0 4px rgba(246, 80, 163, 0.753);
+        border: 1px solid rgb(249, 88, 169);
       }
     }
     &>button{
-      background-color: #4CAF50;
+      background-color: rgba(255, 105, 180, 0.797);
       font-weight: 600;
       color: rgb(0, 0, 0);
-      text-shadow: 0 0 1px rgb(82, 181, 107);
       cursor: pointer;
+      transition: all 0.4s;
       &:hover{
-        background-color: #3e8e41;
+        border-radius: 50px;
+        background-color: rgb(253, 161, 207);
+        transform: scale(0.98);
       }
     }
   }
 
   &>ul{
+    box-shadow: 0 0 8px 0.1px grey;
     width: clamp(300px, 100vw, 500px);
     display: flex;
     flex-direction: column;
@@ -75,26 +80,30 @@
     &>li{
       scroll-snap-align: start;
       width: 100%;
-      padding: 10px 10px;
+      padding: 10px 0;
       text-align: center;
       border-radius: 3px;
       word-wrap: break-word;
       box-shadow: 0 2px 3px black;
-      transition: all 0.2s;
+      transition: all 0.3s;
       &:hover{
-        transform: scale(1.02) translateY(-2px);
+        transform: scale(0.98);
+        background-color: rgb(251, 211, 231);
       }
 
       &>p{
         font-weight: 600;
         font-size: 0.8rem;
+        background-color: transparent;
       }
       &>a{
+        padding: 0 10px;
         text-decoration: none;
         display: block;
         transition: all 0.2s ease-out;
+        background-color: transparent;
         &:hover{
-          color: rgb(0, 101, 208);
+          color: rgb(41, 0, 249);
         }
       }
     }
@@ -106,6 +115,18 @@
   }
 }
 
+/* HIDING THE SCROLLBAR */
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  scrollbar-width: none;
+}
+* {
+  -ms-overflow-style: none;
+}
+
+/* LOADER STYLE */
 .loader{
   width: 100vw;
   height: 100vh;
