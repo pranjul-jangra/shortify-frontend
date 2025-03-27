@@ -99,6 +99,36 @@
   }
 }
 
+.loader{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.553);
+  z-index: 4;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+
+  &>div{
+    width: 70px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border-top: 4px solid white;
+    box-shadow: 0 -2px blue;
+    background-color: transparent;
+    animation: rotation 2.5s ease-in-out infinite;
+  }
+}
+
+@keyframes rotation {
+  to{
+    transform: rotate(360deg);
+  }
+}
+
 
 @media (max-width: 500px){
   .Viewport-container{

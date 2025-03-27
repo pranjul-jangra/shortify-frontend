@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,6 +8,8 @@ function App() {
   const [input, setInput] = useState('');
   const [customName, setCustomName] = useState('');
   const [shortenedUrls, setShortenedUrls] = useState([]);
+
+  const loaderRef = useRef();
 
   const BASE_URL = import.meta.env.VITE_SERVER_BASEURL;
 
@@ -34,6 +36,7 @@ function App() {
     if (!input.trim()) return toast.error('Please enter a valid URL');
 
     try {
+      loaderRef.current.style.display = 'flex';
       const response = await axios.post(`${BASE_URL}/shorten`, { originalUrl: input, customName });
       
       toast.success('URL shortened successfully');
@@ -44,6 +47,8 @@ function App() {
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.error || 'Something went wrong...');
+    }finally{
+      loaderRef.current.style.display = 'none';
     }
   }
 
@@ -81,6 +86,7 @@ function App() {
         )}
       </ul>
 
+      <article ref={loaderRef} className='loader'><div></div></article>
       <ToastContainer position="top-right" autoClose={5000} />
     </main>
   );
