@@ -76,10 +76,12 @@ function App() {
       setInput('');
       setCustomName('');
   
-      setPage(1);
-      setShortenedUrls([]);
-      setHasMore(true);
-      fetchUrls(1);
+      setTimeout(() => {
+        setPage(1);
+        setShortenedUrls([]);
+        setHasMore(true);
+        fetchUrls(1);
+      }, 100);
   
     } catch (error) {
       toast.error(error.response?.data?.error || 'Something went wrong...');
