@@ -11,6 +11,7 @@ function App() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [isFetching, setIsFetching] = useState(null);
 
   const loaderRef = useRef();
   const observerRef = useRef();
@@ -21,6 +22,7 @@ function App() {
   const fetchUrls = async (pageNumber) => {
     if (!hasMore) return;
     setLoading(true);
+    setIsFetching(true);
   
     try {
       const response = await axios.get(`${BASE_URL}/all-urls?page=${pageNumber}&limit=${LIMIT}`);
@@ -35,6 +37,7 @@ function App() {
       toast.error('Failed to fetch URLs');
     } finally {
       setLoading(false);
+      setIsFetching(false);
     }
   };
   
@@ -97,25 +100,29 @@ function App() {
       </form>
 
       <ul aria-label='All shortened urls'>
-        {shortenedUrls.length === 0 ? (
-          <div>No Shortened URLs Yet...</div>
-        ) : (
-          shortenedUrls.map((data, index) => (
-            <li key={index} ref={index === shortenedUrls.length - 1 ? lastUrlRef : null} aria-label={`${BASE_URL}/${data.shortId}`}>
-              <p>Original URL</p>
-              <a href={data.originalUrl} target="_blank" rel="noopener noreferrer">
-                {data.originalUrl}
-              </a>
-              <p>Shortened URL</p>
-              <a href={`${BASE_URL}/${data.shortId}`} target="_blank" rel="noopener noreferrer">
-                {`${BASE_URL}/${data.shortId}`}
-              </a>
-            </li>
-          ))
-        )}
+        {isFetching && <div>Getting The URLs...</div>}
+
+        {
+          (!isFetching && shortenedUrls.length === 0) ? (
+            <div>No Shortened URLs Yet...</div>
+          ) : (
+            shortenedUrls.map((data, index) => (
+              <li key={index} ref={index === shortenedUrls.length - 1 ? lastUrlRef : null} aria-label={`${BASE_URL}/${data.shortId}`}>
+                <p>Original URL</p>
+                <a href={data.originalUrl} target="_blank" rel="noopener noreferrer">
+                  {data.originalUrl}
+                </a>
+                <p>Shortened URL</p>
+                <a href={`${BASE_URL}/${data.shortId}`} target="_blank" rel="noopener noreferrer">
+                  {`${BASE_URL}/${data.shortId}`}
+                </a>
+              </li>)
+            )
+          )
+        }
       </ul>
 
-      {loading && <p>Loading more URLs...</p>}
+
       <article ref={loaderRef} className='loader'><div></div></article>
       <ToastContainer position="top-right" autoClose={5000} />
     </main>
