@@ -70,8 +70,10 @@
     overflow-y: auto;
     list-style-type: none;
     position: relative;
+    scroll-snap-type: y proximity;
 
     &>li{
+      scroll-snap-align: start;
       width: 100%;
       padding: 10px 10px;
       text-align: center;

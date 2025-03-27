@@ -12,6 +12,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [isFetching, setIsFetching] = useState(null);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
 
   const loaderRef = useRef();
   const observerRef = useRef();
@@ -27,24 +28,32 @@ function App() {
     try {
       const response = await axios.get(`${BASE_URL}/all-urls?page=${pageNumber}&limit=${LIMIT}`);
       
+      if (pageNumber === 1) {
+        setShortenedUrls(response.data.urls);
+      } else {
+        setShortenedUrls((prevUrls) => [...prevUrls, ...response.data.urls]);
+      }
+
       if (response.data.urls.length === 0) {
         setHasMore(false);
       } else {
-        setShortenedUrls((prevUrls) => [...prevUrls, ...response.data.urls]);
         setHasMore(response.data.hasMore);
       }
+
     } catch (error) {
       toast.error('Failed to fetch URLs');
     } finally {
       setLoading(false);
       setIsFetching(false);
+      console.log("shortedURLS in fetch method", shortenedUrls);
     }
   };
   
   // Fetch URLs when component mounts
   useEffect(() => {
+    console.log('useEffect re-runs...')
     fetchUrls(page);
-  }, [page]);
+  }, [page, fetchTrigger]);
 
 
   // Intersection Observer to detect when user scrolls near bottom
@@ -65,6 +74,7 @@ function App() {
   // Handle URL shortening
   async function handleSubmit(e) {
     e.preventDefault();
+    console.log('handleSubmit button is triggered.')
   
     if (!input.trim()) return toast.error('Please enter a valid URL');
   
@@ -75,13 +85,11 @@ function App() {
   
       setInput('');
       setCustomName('');
-  
-      setTimeout(() => {
-        setPage(1);
-        setShortenedUrls([]);
-        setHasMore(true);
-        fetchUrls(1);
-      }, 100);
+      setPage(1);
+      setHasMore(true);
+      setFetchTrigger(prev => prev + 1);
+
+      console.log('page:', page, "hasMore:", hasMore, "shortedURLS inside Button:", shortenedUrls);
   
     } catch (error) {
       toast.error(error.response?.data?.error || 'Something went wrong...');
