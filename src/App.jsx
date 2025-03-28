@@ -134,7 +134,7 @@ function App() {
       </ul>
 
 
-      <article ref={loaderRef} className='loader'><div></div></article>
+      <article ref={loaderRef} className='loader' onClick={(e)=> {e.stopPropagation(); e.preventDefault()}}><div></div></article>
       <ToastContainer position="top-right" autoClose={5000} />
     </main>
   );

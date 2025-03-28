@@ -138,7 +138,6 @@ html {
   display: none;
   justify-content: center;
   align-items: center;
-  pointer-events: none;
 
   &>div{
     width: 70px;
