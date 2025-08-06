@@ -42,17 +42,15 @@ function App() {
       }
 
     } catch (error) {
-      toast.error('Failed to fetch URLs');
+      return;
     } finally {
       setLoading(false);
       setIsFetching(false);
-      console.log("shortedURLS in fetch method", shortenedUrls);
     }
   };
   
   // Fetch URLs when component mounts
   useEffect(() => {
-    console.log('useEffect re-runs...')
     fetchUrls(page);
   }, [page, fetchTrigger]);
 
@@ -75,13 +73,12 @@ function App() {
   // Handle URL shortening
   async function handleSubmit(e) {
     e.preventDefault();
-    console.log('handleSubmit button is triggered.')
   
     if (!input.trim()) return toast.error('Please enter a valid URL');
   
     try {
       loaderRef.current.style.display = 'flex';
-      const response = await axios.post(`${BASE_URL}/shorten`, { originalUrl: input, customName });
+      await axios.post(`${BASE_URL}/shorten`, { originalUrl: input, customName });
       toast.success('URL shortened successfully');
   
       setInput('');
@@ -90,8 +87,6 @@ function App() {
       setHasMore(true);
       setFetchTrigger(prev => prev + 1);
 
-      console.log('page:', page, "hasMore:", hasMore, "shortedURLS inside Button:", shortenedUrls);
-  
     } catch (error) {
       toast.error(error.response?.data?.error || 'Something went wrong...');
     } finally {
